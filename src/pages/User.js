@@ -1,29 +1,40 @@
 import React from "react";
 import { Container, Row, Col, Jumbotron, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: this.props.user,
-      editAddress: false
     };
   }
   render() {
-    const user = this.state.user;
-    const address = this.state.editAddress ? <><input type="text" ></input><Button onClick={() => this.setState({editAddress: false})}>Save</Button></> :
-        <><p>{user.address}</p> <Button onClick={() => this.setState({editAddress: true})}>edit</Button></>
-    const a = <p>dfs</p>
-    return (
-      <Jumbotron>
+    const user = this.props.user;
+    console.log(user)
+    
+      if(user){ 
+      return(<Jumbotron>
         <Container>
           <h1>{user.name}</h1>
-          {address}
-             
-      
+          <h2>{user.address}</h2>
+          <h2>{user.zipcode}</h2>
+          <Link
+            to={{
+              pathname: "/edit",
+              state: {user: user},
+            }}
+          >
+            Edit
+          </Link>
         </Container>
       </Jumbotron>
-    );
+      )}
+      else
+      {
+        return(
+            <p>nope</p>
+        )}
   }
 }
 

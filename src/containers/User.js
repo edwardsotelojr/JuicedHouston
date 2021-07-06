@@ -1,8 +1,10 @@
 import { connect } from 'react-redux'
 import User from '../pages/User'
-const mapStateToProps = (state) => ({
-    user: state.auth.user,
-});
+const mapStateToProps = (state) => {console.log(state);
+    return ({
+        user: state.auth.user,
+    })
+};
 
 
 

@@ -130,7 +130,7 @@ class Header extends Component {
       title = 'user'
       dropdown = (
         <div>
-            <Dropdown.Header><Link to="/User">{this.props.auth.user.name}</Link></Dropdown.Header>
+            <Dropdown.Header><Link to="/User">{this.props.user.name}</Link></Dropdown.Header>
             <Dropdown.Item><Button onClick={this.props.logout}>Logout</Button></Dropdown.Item>
         </div>
       );
@@ -146,7 +146,7 @@ class Header extends Component {
                   "none")
               }
             >
-              signin
+              signup
             </Link>
         </div>
       );

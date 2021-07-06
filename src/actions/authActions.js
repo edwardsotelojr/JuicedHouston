@@ -1,12 +1,15 @@
 import {
     GET_ERRORS,
     SET_CURRENT_USER,
-    USER_LOADING
+    USER_LOADING,
+    USER_EDITED
   } from "./types";
   import axios from "axios";
   import setAuthToken from "../utils/setAuthToken";
   import jwt_decode from 'jwt-decode';
-  import { useHistory } from 'react-router-dom'
+  import history from "../history";
+
+
   // Register User
   export const signup = (userData, history) => dispatch => {
     axios
@@ -26,7 +29,7 @@ import {
     axios
       .post("http://localhost:8000/users/signin", userData)
       .then(res => {
-        console.log(res);
+        console.log(res.data);
         // Save to localStorage
   // Set token to localStorage
         const { token } = res.data;
@@ -35,8 +38,10 @@ import {
         setAuthToken(token);
         // Decode token to get user data
         const decoded = jwt_decode(token);
+        console.log("decoded ",decoded)
         // Set current user
         dispatch(setCurrentUser(decoded));
+        history.push('/')
       })
       .catch(err =>
         dispatch({
@@ -60,8 +65,6 @@ import {
   };
   // Log user out
   export const logoutUser = () => dispatch => {
-    const history = useHistory();
-
     // Remove token from local storage
     localStorage.removeItem("jwtToken");
     // Remove auth header for future requests
@@ -69,5 +72,26 @@ import {
     console.log('logoutUser')
     // Set current user to empty object {} which will set isAuthenticated to false
     dispatch(setCurrentUser({}));
-    history.push('/');
+    history.push('/')
   };
+
+  export const userEdited = () => {
+    return {
+      type: USER_EDITED
+    };
+  };
+
+  export const editUser = (user) => dispatch => {
+
+     axios.patch('http://localhost:8000/users/edit/' + user._id, user)
+    .then((res) => {
+      console.log(res.data)
+      console.log('User successfully updated')
+      dispatch(userEdited())
+    }).catch((error) => {
+      console.log(error)
+    })
+ 
+  // Redirect to Student List 
+  //this.props.history.push('/')  
+}
